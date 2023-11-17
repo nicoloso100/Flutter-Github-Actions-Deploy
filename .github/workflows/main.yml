@@ -1,6 +1,8 @@
 name: "[DEV] Build and Publish iOS"
-on: workflow_dispatch
-    
+on: 
+    push:
+        branches:
+            - main
 jobs:
   # Build job
   build:
@@ -54,7 +56,7 @@ jobs:
         with:
          name: release-ipa
          # Path to the release files
-         path: build/ios/ipa/*.ipa
+         path: build/ios/ipa/Apps/flutter_deploy.ipa
 
       # Important! Cleanup: remove the certificate and provisioning profile from the runner!
       - name: Clean up keychain and provisioning profile
@@ -62,3 +64,24 @@ jobs:
         run: |
           security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
           rm ~/Library/MobileDevice/Provisioning\ Profiles/build_pp.mobileprovision
+  release:
+    name: Release ipa to AppCenter
+    needs: [ build ]
+    runs-on: ubuntu-latest
+    steps:
+    
+    # Retrieve ipa file from GitHub artifacts
+    - uses: actions/checkout@v2
+    - name: Get release-ipa from artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: release-ipa
+    - name: upload artefact to App Center
+      uses: wzieba/AppCenter-Github-Action@v1
+      with:
+        appName: nangarita/Deploy-Test
+        token: ${{secrets.APP_CENTER_TOKEN}}
+        group: Collaborators
+        file: flutter_deploy.ipa
+        notifyTesters: true
+        debug: false
