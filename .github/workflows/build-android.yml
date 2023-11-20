@@ -50,7 +50,7 @@ jobs:
       with:
         appName: nangarita/Deploy-Test-Android
         token: ${{secrets.APP_CENTER_TOKEN}}
-        group: Collaborators
+        group: PE Internal Testing
         file: app-release.apk
         notifyTesters: true
         debug: false
