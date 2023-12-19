@@ -21,7 +21,9 @@ jobs:
           flutter-version: '3.10.5'
 
       # Install your project's dependencies
-      - run: flutter pub get
+      - run: |
+          flutter pub get
+          dart run build_runner build
 
       # Build and sign the ipa using a single flutter command
       - name: Building APK
