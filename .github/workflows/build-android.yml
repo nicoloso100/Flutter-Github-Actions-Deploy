@@ -2,7 +2,7 @@ name: "[DEV] Build and Publish Android"
 on: 
     push:
         branches:
-            - dev
+            - main
 jobs:
   # Build job
   build:
@@ -11,6 +11,8 @@ jobs:
       # Checks-out our repository under $GITHUB_WORKSPACE, so our job can access it
       - name: Checkout repository
         uses: actions/checkout@v2
+      - name: Branch name
+        run: echo running on branch ${GITHUB_REF##*/}
         
       # Install flutter
       - name: Flutter get
