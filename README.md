@@ -1,6 +1,6 @@
 # flutter_deploy
 
-A new Flutter project. test
+A new Flutter project.
 
 ## Getting Started
 
